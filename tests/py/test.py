@@ -7,4 +7,5 @@ d = config_lang_reader.read_xml("../test.xml")
 
 e = config_lang_reader.read("../test.toml")
 
+fail = config_lang_reader.read("../test.html")  # will throw unsupported file extension
 pass

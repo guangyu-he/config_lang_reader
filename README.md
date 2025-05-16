@@ -13,7 +13,15 @@ performance with Python's usability for configuration management.
 
 ## Installation
 
-### Python (via maturin or setuptools-rust)
+### by PyPI
+
+```sh
+uv pip install config-lang-reader
+# or
+pip install config-lang-reader
+```
+
+### from source (via maturin or setuptools-rust)
 
 Build and install with [maturin](https://github.com/PyO3/maturin):
 
