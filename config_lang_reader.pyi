@@ -1,4 +1,3 @@
-# flake8: noqa: PYI021
 from typing import Dict
 
 
@@ -20,3 +19,7 @@ def read_xml(path: str) -> Dict:
 
 def read(path: str) -> Dict:
     """Reads a file and returns its contents as a Python dict."""
+
+
+def write_toml(dict: Dict, path: str) -> bool:
+    """Writes a Python dict to a TOML file."""

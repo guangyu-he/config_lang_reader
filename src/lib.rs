@@ -1,10 +1,12 @@
 pub mod json_lib;
+mod resolve_array_and_table;
 pub mod toml_lib;
 pub mod xml_lib;
 pub mod yaml_lib;
 
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
+use std::collections::HashMap;
 
 /// Reads a TOML file and returns its contents as a Python dict.
 #[pyfunction]
@@ -45,6 +47,16 @@ fn read(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     }
 }
 
+/// Writes a TOML file from a Python dictionary.
+#[pyfunction]
+fn write_toml(py: Python<'_>, dict: HashMap<String, PyObject>, path: &str) -> PyResult<()> {
+    let toml_table = resolve_array_and_table::resolve_table(py, dict);
+    let toml_string = toml::to_string(&toml_table).unwrap();
+    std::fs::write(path, toml_string)?;
+
+    Ok(())
+}
+
 /// A Python module implemented in Rust.
 #[pymodule]
 fn config_lang_reader(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -53,5 +65,6 @@ fn config_lang_reader(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(read_json, m)?)?;
     m.add_function(wrap_pyfunction!(read_xml, m)?)?;
     m.add_function(wrap_pyfunction!(read, m)?)?;
+    m.add_function(wrap_pyfunction!(write_toml, m)?)?;
     Ok(())
 }
