@@ -59,7 +59,7 @@ fn write_toml(py: Python<'_>, dict: HashMap<String, PyObject>, path: &str) -> Py
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn config_lang_reader(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn config_lang_serder(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(read_toml, m)?)?;
     m.add_function(wrap_pyfunction!(read_yaml, m)?)?;
     m.add_function(wrap_pyfunction!(read_json, m)?)?;

@@ -1,4 +1,4 @@
-# config_lang_reader
+# config_lang_serder
 
 A Rust library and Python extension for reading and converting configuration files (TOML, YAML, JSON, XML) into Python
 dictionaries. Powered by [PyO3](https://github.com/PyO3/pyo3), this project enables seamless integration of Rust's
@@ -33,7 +33,7 @@ Or build a wheel:
 
 ```sh
 maturin build
-pip install target/wheels/config_lang_reader-*.whl
+pip install target/wheels/config_lang_serder-*.whl
 ```
 
 ## Usage
@@ -41,10 +41,10 @@ pip install target/wheels/config_lang_reader-*.whl
 ### Python
 
 ```python
-import config_lang_reader
+import config_lang_serder
 
 # Automatically detects file type by extension
-data = config_lang_reader.read('config.yaml')
+data = config_lang_serder.read('config.yaml')
 print(data)
 ```
 
