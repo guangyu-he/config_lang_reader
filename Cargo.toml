@@ -1,9 +1,9 @@
 [package]
 name = "config_lang_serder"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Guangyu He <fredhgy2010@gmail.com>"]
-description = "A Rust library and Python extension for reading and converting configuration files (TOML, YAML, JSON, XML) into Python dictionaries. Powered by PyO3."
+description = "A Rust library and Python extension for reading and converting configuration files (TOML, YAML, JSON, XML) into Python dictionaries or vice versa. Powered by PyO3."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
