@@ -7,7 +7,15 @@ use serde_json::Value as JsonValue;
 use std::fs;
 use std::path::PathBuf;
 
-/// Reads an XML file and returns its contents as a Python dict.
+/// Reads an XML file from the given path and returns a Python dictionary
+/// representing the root element.
+///
+/// # Errors
+///
+/// If the file could not be read, or if the XML could not be parsed,
+/// an error is returned.
+///
+/// If the root element is not an object, an error is returned.
 pub fn xml_to_py(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     match read_xml_to_json(&PathBuf::from(path)) {
         Ok(json) => match json {
@@ -26,14 +34,24 @@ pub fn xml_to_py(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     }
 }
 
-/// Reads an XML file and converts it to a serde_json::Value for easier conversion.
+/// Reads an XML file from the given path and returns its contents as JSON.
+///
+/// # Errors
+///
+/// If the file could not be read, or if the XML could not be parsed,
+/// an error is returned.
 fn read_xml_to_json(path: &PathBuf) -> Result<JsonValue> {
     let content = fs::read_to_string(path)?;
     let json: JsonValue = from_str(&content)?;
     Ok(json)
 }
 
-/// Reuse the JSON-to-Python conversion logic for XML.
+/// Converts a serde_json::Value into a Python object.
+///
+/// # Errors
+///
+/// If the JSON value is a number that can't be converted to an i64, u64, or f64,
+/// an error is returned.
 fn json_value_to_py(py: Python<'_>, v: JsonValue) -> PyResult<PyObject> {
     match v {
         JsonValue::Null => Ok(py.None()),

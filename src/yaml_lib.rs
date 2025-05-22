@@ -7,6 +7,13 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
+/// Reads a YAML file from the given path and returns a Python dictionary
+/// representing the top-level keys.
+///
+/// # Errors
+///
+/// If the file could not be read, or if the YAML could not be parsed,
+/// an error is returned.
 pub fn yaml_to_py(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     match read_yaml_to_hashmap(&PathBuf::from(path)) {
         Ok(map) => {
@@ -20,7 +27,13 @@ pub fn yaml_to_py(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     }
 }
 
-/// Reads a YAML file from the given path and returns a HashMap<String, Value> representing the top-level keys.
+/// Reads a YAML file from the given path and returns a HashMap of its
+/// top-level keys to YAML values.
+///
+/// # Errors
+///
+/// If the file could not be read, or if the YAML could not be parsed,
+/// an error is returned.
 fn read_yaml_to_hashmap(path: &PathBuf) -> Result<HashMap<String, Yaml>> {
     let content = fs::read_to_string(path)?;
     let value: Yaml = serde_yaml::from_str(&content)?;
@@ -35,6 +48,13 @@ fn read_yaml_to_hashmap(path: &PathBuf) -> Result<HashMap<String, Yaml>> {
     Ok(map)
 }
 
+/// Converts a serde_yaml::Value into a Python object.
+///
+/// # Errors
+///
+/// If the YAML value is a number that can't be converted to an i64 or f64,
+/// or if the YAML value is a type that can't be converted to a Python object,
+/// an error is returned.
 fn yaml_value_to_py(py: Python<'_>, v: Yaml) -> PyResult<PyObject> {
     match v {
         Yaml::Bool(b) => Ok(PyBool::new(py, b).to_owned().into()),

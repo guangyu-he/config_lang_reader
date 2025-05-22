@@ -7,6 +7,12 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
+/// Reads a JSON file from the given path and returns a Python dictionary.
+///
+/// # Errors
+///
+/// If the file could not be read, or if the JSON could not be parsed,
+/// an error is returned.
 pub fn json_to_py(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     match read_json_to_hashmap(&PathBuf::from(path)) {
         Ok(map) => {
@@ -20,7 +26,12 @@ pub fn json_to_py(py: Python<'_>, path: &str) -> PyResult<Py<PyDict>> {
     }
 }
 
-/// Reads a JSON file from the given path and returns a HashMap<String, Value> representing the top-level keys.
+/// Reads a JSON file from the given path and returns a HashMap<String, serde_json::Value> of its top-level keys.
+///
+/// # Errors
+///
+/// If the file could not be read, or if the JSON could not be parsed,
+/// an error is returned.
 fn read_json_to_hashmap(path: &PathBuf) -> Result<HashMap<String, Json>> {
     let content = fs::read_to_string(path)?;
     let value: Json = serde_json::from_str(&content)?;
@@ -33,6 +44,12 @@ fn read_json_to_hashmap(path: &PathBuf) -> Result<HashMap<String, Json>> {
     Ok(map)
 }
 
+/// Converts a serde_json::Value into a Python object.
+///
+/// # Errors
+///
+/// If the JSON value is a number that can't be converted to an i64, u64, or f64,
+/// an error is returned.
 fn json_value_to_py(py: Python<'_>, v: Json) -> PyResult<PyObject> {
     match v {
         Json::Null => Ok(py.None()),
