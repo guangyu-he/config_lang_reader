@@ -38,9 +38,12 @@ maturin build
 pip install target/wheels/config_lang_serder-*.whl
 ```
 
-## Usage
+### Requirements
 
-### Python
+- Python >= 3.10
+- Rust toolchain (for building)
+
+## Usage
 
 ```python
 import config_lang_serder
